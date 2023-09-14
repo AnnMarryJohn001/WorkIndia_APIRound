@@ -1,0 +1,52 @@
+
+<html>
+<head>
+    <title>Train Search</title>
+</head>
+<body>
+    <h1>Welcome User</h1>
+    <h1>Train Search</h1>
+    
+    <form id="searchForm">
+        <input type="text" id="source" placeholder="Source" required>
+        <input type="text" id="destination" placeholder="Destination" required>
+        <button type="submit">Search</button>
+    </form>
+
+    <div id="searchResults"></div>
+
+    <script>
+        const searchForm = document.getElementById('searchForm');
+        const sourceInput = document.getElementById('source');
+        const destinationInput = document.getElementById('destination');
+        const searchResults = document.getElementById('searchResults');
+
+        searchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const source = sourceInput.value;
+            const destination = destinationInput.value;
+
+            fetch(`/api/searchtrains?source=${source}&destination=${destination}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.length === 0) {
+                        searchResults.innerHTML = 'No trains found for this route.';
+                    } else {
+                        // Display search results, e.g., in a table
+                        let table = '<table>';
+                        table += '<tr><th>Train Name</th><th>Source</th><th>Destination</th><th>Available Seats</th><th>Arrival At Source</th><th>Arrival at Destination</th></tr>';
+                        data.forEach((train) => {
+                            table += `<tr><td>${train.name}</td><td>${train.source}</td><td>${train.dest}</td><td>${train.seat}</td><td>${train.sourcetime}</td><td>${train.desttime}</td></tr>`;
+                        });
+                        table += '</table>';
+                        searchResults.innerHTML = table;
+                    }
+                })
+                .catch((error) => {
+                    console.error('Fetch error:', error);
+                });
+        });
+    </script>
+</body>
+</html>

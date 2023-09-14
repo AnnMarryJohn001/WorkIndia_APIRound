@@ -1,0 +1,78 @@
+<html>
+    <body>
+        <h1>
+            Welcome Admin
+        </h1>
+        <form id="addtrain">
+    
+            <input type="text" id="trainame" placeholder="trainame" required>
+            <input type="text" id="source" placeholder="source" required>
+            <input type="text" id="destination" placeholder="destination" required>
+            <input type="text" id="seat" placeholder="seat" required>
+            <input type="text" id="arrival_time_at_source" placeholder="arrival_time_at_source" required>
+            <input type="text" id="arrival_time_at_destination" placeholder="arrival_time_at_destination" required>
+            <button type="submit">Add Train</button>
+            
+          </form>
+          <script>
+            const addtrain = document.getElementById('addtrain');
+            const trainameInput = document.getElementById('trainame');
+            const sourceInput = document.getElementById('source');
+            const destInput = document.getElementById('destination');
+            const seatInput = document.getElementById('seat');
+            const arrivaltimesourceInput = document.getElementById('arrival_time_at_source');
+            const arrivaltimedestInput = document.getElementById('arrival_time_at_destination');
+    
+
+// Function to send a POST request to create a note
+function addTrain() {
+  const name=trainameInput.value;
+  const source=sourceInput.value;
+  const dest=destInput.value;
+  const seat=seatInput.value;
+  const sourcetime=arrivaltimesourceInput.value;
+  const desttime=arrivaltimedestInput.value;
+
+
+  const data = {
+    
+    name:name,
+    source:source,
+    dest:dest,
+    seat:seat,
+    sourcetime:sourcetime,
+    desttime:desttime,
+  };
+
+  fetch('/api/train', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then((result) => {
+      console.log(result);
+      // After creating the note, refresh the notes list
+      alert("Train Added Successfully");
+      
+    })
+    .catch((error) => {
+      console.error('Fetch error:', error);
+    });
+}
+addtrain.addEventListener('submit', (e) => {
+  e.preventDefault();
+  console.log('Form submitted');
+  addTrain();
+});
+
+          </script>
+    </body>
+</html>

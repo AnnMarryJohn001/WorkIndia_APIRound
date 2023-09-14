@@ -1,0 +1,50 @@
+<html>
+    <body>
+        <h1>USER LOGIN</h1>
+        <h3>User Logim</h3>
+  <form id="loginForm">
+    
+    <input type="text" id="username" placeholder="username" required>
+    <input type="text" id="password" placeholder="password" required>
+    <button type="submit">Login</button>
+    
+  </form>
+  <script>
+     const loginForm = document.getElementById('loginForm');
+
+loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    const data = {
+        username: username,
+        password: password,
+    };
+
+    fetch('/api/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+        .then((response) => {
+            if (response.status === 200) {
+                alert('Login successful');
+                // Redirect to another webpage
+                window.location.href = '/welcome.html'; // Change to the desired URL
+            } else if (response.status === 401) {
+                alert('Invalid username or password');
+            } else {
+                alert('Login failed');
+            }
+        })
+        .catch((error) => {
+            console.error('Fetch error:', error);
+        });
+});
+  </script>
+    </body>
+</html>

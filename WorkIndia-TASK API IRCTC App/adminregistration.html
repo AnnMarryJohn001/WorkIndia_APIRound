@@ -1,0 +1,67 @@
+<html>
+    <body>
+        <h1>ADMIN REGISTRATION</h1>
+
+  <h3>Create a Admin</h3>
+  <form id="createUserForm">
+    
+    <input type="text" id="username" placeholder="username" required>
+    <input type="text" id="password" placeholder="password" required>
+    <input type="text" id="email" placeholder="email" required>
+    <button type="submit">Create</button>
+    
+  </form>
+  <script>
+    const createUserForm = document.getElementById('createUserForm');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const emailInput = document.getElementById('email');
+    
+
+// Function to send a POST request to create a note
+function createUser() {
+  const username = usernameInput.value;
+  const password = passwordInput.value;
+  const email = emailInput.value;
+
+  const data = {
+    
+    username: username,
+    password:password,
+    email:email,
+  };
+
+  fetch('/api/adminreg', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then((result) => {
+      console.log(result);
+      // After creating the note, refresh the notes list
+      alert("Admin Created Successfully");
+      
+    })
+    .catch((error) => {
+      console.error('Fetch error:', error);
+    });
+}
+createUserForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  console.log('Form submitted');
+  createUser();
+});
+
+  </script>
+
+
+    </body>
+</html>
